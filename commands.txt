@@ -1,0 +1,87 @@
+# ===== Question 1: Git and GitHub =====
+git --version
+git config --global user.name "Kainat Khan"
+git config --global user.email "khankainat5432@gmail.com"
+git config --global --list
+mkdir devops-a-2329220
+cd devops-a-2329220
+mkdir site evidence
+# site/index.html and .gitignore (evidence/) created in VS Code
+git init -b main
+git add .
+git status
+git commit -m "Initial portfolio website"
+git log --oneline
+git remote add origin https://github.com/<username>/devops-a-2329220.git   # placeholder typed by mistake
+git remote add origin https://github.com/KainatKhan625/devops-a-2329220.git # failed: remote origin already exists
+git remote set-url origin https://github.com/KainatKhan625/devops-a-2329220.git
+git remote -v
+git push -u origin main
+git checkout -b update-content
+# fourth skill (Linux) added in site/index.html
+git add site/index.html
+git commit -m "Add fourth technical skill"
+git checkout main
+git merge update-content
+git push origin main
+git push -u origin update-content
+git log --oneline --graph --all
+git branch -a
+mkdir .github\workflows
+# pages.yml created in VS Code
+git add .github/workflows/pages.yml
+git commit -m "Add GitHub Pages workflow"
+git push origin main
+# heading changed in site/index.html
+git add site/index.html
+git commit -m "Update portfolio heading"
+git push origin main
+git status
+git log --oneline --graph --all
+git branch -a
+
+# ===== Question 2: Docker =====
+docker --version
+docker ps
+minikube version
+kubectl version --client
+winget install Kubernetes.minikube
+# Dockerfile created in VS Code
+dir Dockerfile
+docker build -t devops-a-2329220:v1 .
+docker run -d --name devops-a-2329220 -p 8080:80 devops-a-2329220:v1
+docker images
+docker ps
+
+# ===== Docker/WSL recovery (C: drive was full) =====
+wsl --shutdown
+mkdir E:\DockerData
+wsl --export docker-desktop E:\docker-desktop.tar
+wsl --unregister docker-desktop
+wsl --import docker-desktop E:\DockerData E:\docker-desktop.tar --version 2
+Get-PSDrive C
+docker start devops-a-2329220
+docker ps
+
+# ===== Question 2: Minikube and Kubernetes =====
+minikube start --driver=docker        # first attempt failed: not enough space on the disk (C: full)
+mkdir E:\minikube
+setx MINIKUBE_HOME "E:\minikube"
+echo $env:MINIKUBE_HOME
+minikube delete --all --purge
+minikube start --driver=docker        # failed once (connection reset), succeeded on retry
+minikube start --driver=docker
+kubectl get nodes
+minikube image load devops-a-2329220:v1
+minikube image ls
+# deployment.yaml and service.yaml created in VS Code
+kubectl apply -f deployment.yaml
+kubectl get pods
+kubectl get deployment
+kubectl apply -f service.yaml
+kubectl get service devops-a-2329220
+minikube service devops-a-2329220 --url
+kubectl scale deployment devops-a-2329220 --replicas=2
+kubectl get pods
+kubectl get deployment
+Get-History | ForEach-Object { $_.CommandLine }
